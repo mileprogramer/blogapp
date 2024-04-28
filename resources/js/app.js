@@ -1,1 +1,9 @@
 import './bootstrap.js';
+import './jquery.js';
+import './popper.min.js';
+import './owl.carousel.min.js';
+import './jquery.magnific-popup.js';
+import './contact.js';
+import './wow.min.js';
+import './jquery.counterup.min.js';
+import './main.js';

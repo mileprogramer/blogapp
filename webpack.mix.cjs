@@ -1,12 +1,7 @@
 const mix = require('laravel-mix');
 
-const fs = require("fs");
-
-fs.readdirSync("resources/scss/").forEach(fileName => 
-   mix.sass(`resources/scss/${fileName}`, "public/css"));
-
-fs.readdirSync("resources/js/").forEach(fileName => 
-   mix.js(`resources/js/${fileName}`, "public/js"));
+mix.js('resources/js/app.js', 'public/js')
+   .sass('resources/scss/style.scss', 'public/css');
 
 mix.options({
    processCssUrls: false
