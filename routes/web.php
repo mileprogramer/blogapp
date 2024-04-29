@@ -23,6 +23,11 @@ Route::get('/blog', function () {
     return view("pages/blog/blog");
 });
 
+// Login page
+Route::get('/admin/login', function () {
+    return view("adminDashboard/login");
+});
+
 // ADMIN DASHBOARD
 Route::get('/admin', function () {
     return view("adminDashboard/admin");
