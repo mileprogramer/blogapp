@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+// Home page
 Route::get('/', function () {
     return view("pages/home/home");
 });
@@ -22,23 +22,23 @@ Route::get('/admin', function () {
     return view("adminDashboard/admin");
 });
 // POSTS
-Route::get('/admin/all-posts', function () {
-    return view("adminDashboard/admin");
+Route::get('/admin/posts', function () {
+    return view("adminDashboard/all_posts");
 });
-Route::get('/admin/add-posts', function () {
-    return view("adminDashboard/admin");
-});
-// TAGS
-Route::get('/admin/all-tags', function () {
-    return view("adminDashboard/admin");
-});
-Route::get('/admin/add-tags', function () {
-    return view("adminDashboard/admin");
+Route::get('/admin/add-post', function () {
+    return view("adminDashboard/add_post");
 });
 // Categories
-Route::get('/admin/all-categories', function () {
-    return view("adminDashboard/admin");
+Route::get('/admin/categories', function () {
+    return view("adminDashboard/all_categories");
 });
 Route::get('/admin/add-category', function () {
-    return view("adminDashboard/admin");
+    return view("adminDashboard/add_category");
+});
+// TAGS
+Route::get('/admin/tags', function () {
+    return view("adminDashboard/all_tags");
+});
+Route::get('/admin/add-tag', function () {
+    return view("adminDashboard/add_tag");
 });
