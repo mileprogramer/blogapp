@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+// Route for testing
+Route::get("/db", function(){
+    $post = DB::select("SELECT * FROM Tag");
+    dd($post);
+});
 
 // Home page
 Route::get('/', function () {
