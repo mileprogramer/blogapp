@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('date');
             $table->string('slug');
             $table->bigInteger('total_access');
+            $table->boolean("active")->default(true);
             $table->timestamps();
         });
     }
