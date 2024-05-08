@@ -1,7 +1,7 @@
 @extends('./adminDashboard/master')
 
 @section('title')
-    All Posts
+    Edit category
 @endsection
 
 @section('favicon')
@@ -26,8 +26,8 @@
       <!-- Page wrapper  -->
       <div class="page-wrapper">
           <div class="container">
-                <h1 class="p-3">Add category</h1>
-                @include('adminDashboard.partials.form_add_post')
+                <h1 class="p-3">Edit category</h1>
+                @include('adminDashboard.category.form_edit_category', ["name_category"=>$name_category])
           </div>
       </div>
       <!-- End Page wrapper  -->
@@ -36,5 +36,6 @@
 
 @section('js')
   <!-- End Wrapper -->
+  <script src="{{ asset('admin_dashboard/dist/js/alert.js') }}"></script>
   @include('adminDashboard.partials.js')
 @endsection

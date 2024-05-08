@@ -27,15 +27,10 @@
       <div class="page-wrapper">
           <div class="container">
               <h1 class="p-3">All posts</h1>
-              <div class="row">
-                <div class="card col-3 p-0">
-                    <div class="card-header">Post 1</div>
-                    <div class="card-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid quidem non labore expedita voluptates beatae cum aperiam iure provident, eos veritatis sapiente aut libero nam? Tempora nihil ex repudiandae magni.</div>
-                    <div class="card-footer">
-                        <button class="btn btn-danger">Delete</button>
-                        <button class="btn btn-warning">Edit</button>
-                    </div>
-                </div>
+              <div class="row gap-3">
+                @foreach ($all_posts as $post)
+                    @include('adminDashboard.layouts.post', ["post"=> $post])
+                @endforeach
               </div>
           </div>
       </div>

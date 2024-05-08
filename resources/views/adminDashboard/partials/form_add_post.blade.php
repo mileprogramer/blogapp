@@ -14,22 +14,12 @@
                 tags for the post</label>
             <div class="col-sm-9">
                 <div class="row">
-                    <div class="col-2">
-                        <span class="p-3">Sports</span>
-                        <input type="checkbox" value="Nesto" />
-                    </div>
-                    <div class="col-2">
-                        <span class="p-3">Sports</span>
-                        <input type="checkbox" value="Nesto" />
-                    </div>
-                    <div class="col-2">
-                        <span class="p-3">Sports</span>
-                        <input type="checkbox" value="Nesto" />
-                    </div>
-                    <div class="col-2">
-                        <span class="p-3">Sports</span>
-                        <input type="checkbox" value="Nesto" />
-                    </div>
+                    @foreach ($tags as $tag)
+                        <div class="col-2">
+                            <span class="p-3">{{ $tag["tag_name"] }}</span>
+                            <input type="checkbox" value="Nesto" />
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
