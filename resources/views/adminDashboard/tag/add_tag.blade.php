@@ -27,7 +27,7 @@
       <div class="page-wrapper">
           <div class="container">
                 <h1 class="p-3">Add tag</h1>
-                @include('adminDashboard.partials.form_add_post')
+                @include('adminDashboard.tag.form_add_tag')
           </div>
       </div>
       <!-- End Page wrapper  -->

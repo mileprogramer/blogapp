@@ -1,7 +1,7 @@
 @extends('./adminDashboard/master')
 
 @section('title')
-    All Posts
+    Edit tag
 @endsection
 
 @section('favicon')
@@ -26,16 +26,8 @@
       <!-- Page wrapper  -->
       <div class="page-wrapper">
           <div class="container">
-              <h1 class="p-3">All tags</h1>
-              <div class="row">
-                <div class="card col-3 p-0">
-                    <div class="card-header">Tag name: Sports</div>
-                    <div class="card-footer">
-                        <button class="btn btn-danger">Delete</button>
-                        <button class="btn btn-warning">Edit</button>
-                    </div>
-                </div>
-              </div>
+                <h1 class="p-3">Edit tag</h1>
+                @include('adminDashboard.tag.form_edit_tag', ["tag_name"=>$tag_name])
           </div>
       </div>
       <!-- End Page wrapper  -->
@@ -44,5 +36,6 @@
 
 @section('js')
   <!-- End Wrapper -->
+  <script src="{{ asset('admin_dashboard/dist/js/alert.js') }}"></script>
   @include('adminDashboard.partials.js')
 @endsection
