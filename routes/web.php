@@ -3,7 +3,7 @@
 use App\Http\Controllers\AddPost;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
-use App\Models\Category;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
@@ -62,9 +62,8 @@ Route::post('/admin/add-category', [CategoryController::class, 'store']);
 Route::post('/admin/edit-category/', [CategoryController::class, 'edit']);
 
 // TAGS
-Route::get('/admin/tags', function () {
-    return view("adminDashboard/all_tags");
-});
-Route::get('/admin/add-tag', function () {
-    return view("adminDashboard/add_tag");
-});
+Route::get('/admin/tags', [TagController::class, 'index']);
+Route::get('/admin/edit-tag/{tag_name}', [TagController::class, 'edit']);
+Route::view('/admin/add-tag', "adminDashboard.tag.add_tag");
+Route::post('/admin/edit-tag/', [TagController::class, 'edit']);
+Route::post('/admin/add-tag/', [TagController::class, 'store']);
