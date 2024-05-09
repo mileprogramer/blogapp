@@ -17,29 +17,27 @@ class CategoryController extends Controller
     }
 
     public function store(Request $request) {
-        if($request->isMethod('post')){
-            $name_category = $request->input("name_category");
-            $is_exist_category = Category::where('name_category', $name_category)->first();
-            try{
-                if($is_exist_category === null){
-                    $new_category = new Category();
-                    $new_category->name_category = strtolower($name_category);
-                    $new_category->save();
-                    if($new_category->id){
-                        return view('adminDashboard.category.add_category', ['output' => ['success' => 'You successfully added the new category']]);
-                    }
+        $name_category = $request->input("name_category");
+        $is_exist_category = Category::where('name_category', $name_category)->first();
+        try{
+            if($is_exist_category === null){
+                $new_category = new Category();
+                $new_category->name_category = $name_category;
+                $new_category->save();
+                if($new_category->id){
+                    return view('adminDashboard.category.add_category', ['output' => ['success' => 'You successfully added the new category']]);
                 }
-                elseif($is_exist_category->toArray()["active"] === 0){
-                    return view('adminDashboard.category.add_category', ['output' => ['return_category' => 'There is already category with this name but is unactive', "name_category"=>$is_exist_category["name_category"]]]);
-                }
-                else{
-                    throw new Exception("There is already category with this name");
-                }
+            }
+            elseif($is_exist_category->toArray()["active"] === 0){
+                return view('adminDashboard.category.add_category', ['output' => ['return_category' => 'There is already category with this name but is unactive', "name_category"=>$is_exist_category["name_category"]]]);
+            }
+            else{
+                throw new Exception("There is already category with this name");
+            }
 
-            }
-            catch(Exception $error){
-                return view("adminDashboard.category.add_category", ["output"=>["mistake"=>$error->getMessage()]]);
-            }
+        }
+        catch(Exception $error){
+            return view("adminDashboard.category.add_category", ["output"=>["mistake"=>$error->getMessage()]]);
         }
     }
 
