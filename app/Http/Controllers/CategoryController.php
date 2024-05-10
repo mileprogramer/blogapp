@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Tag;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -17,27 +18,27 @@ class CategoryController extends Controller
     }
 
     public function store(Request $request) {
-        $name_category = $request->input("name_category");
-        $is_exist_category = Category::where('name_category', $name_category)->first();
+        $tag_name = $request->input("tag_name");
+        $tag_exist = Tag::where('tag_name',$tag_name)->first();
         try{
-            if($is_exist_category === null){
-                $new_category = new Category();
-                $new_category->name_category = $name_category;
-                $new_category->save();
-                if($new_category->id){
-                    return view('adminDashboard.category.add_category', ['output' => ['success' => 'You successfully added the new category']]);
+            if($tag_exist === null){
+                $new_tag = new Tag();
+                $new_tag->tag_name = $tag_name;
+                $new_tag->save();
+                if($new_tag->id){
+                    return view('adminDashboard.category.add_tag', ['output' => ['success' => 'You successfully added new tag']]);
                 }
             }
-            elseif($is_exist_category->toArray()["active"] === 0){
-                return view('adminDashboard.category.add_category', ['output' => ['return_category' => 'There is already category with this name but is unactive', "name_category"=>$is_exist_category["name_category"]]]);
+            elseif($tag_exist->toArray()["active"] === 0){
+                return view('adminDashboard.category.add_tag', ['output' => ['return_tag' => 'There is already tag with this name but is unactive', "name_category"=>$tag_exist["tag_name"]]]);
             }
             else{
-                throw new Exception("There is already category with this name");
+                throw new Exception("There is already tag with this name");
             }
 
         }
         catch(Exception $error){
-            return view("adminDashboard.category.add_category", ["output"=>["mistake"=>$error->getMessage()]]);
+            return view("adminDashboard.tag.add_tag", ["output"=>["mistake"=>$error->getMessage()]]);
         }
     }
 
