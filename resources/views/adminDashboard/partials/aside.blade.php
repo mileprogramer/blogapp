@@ -44,7 +44,7 @@
                                     tags</span></a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="add-tag" class="sidebar-link"><i class="mdi mdi-note-plus"></i><span
+                            <a href="/admin/add-tag" class="sidebar-link"><i class="mdi mdi-note-plus"></i><span
                                     class="hide-menu">Add tag</span></a>
                         </li>
                     </ul>

@@ -27,7 +27,7 @@
       <div class="page-wrapper">
           <div class="container">
                 <h1 class="p-3">Add tag</h1>
-                @include('adminDashboard.tag.form_add_tag')
+                @include('adminDashboard.tag.form_add_tag', ["output"=>$output ?? ""])
           </div>
       </div>
       <!-- End Page wrapper  -->

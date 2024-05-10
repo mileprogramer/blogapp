@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('tag', function (Blueprint $table) {
             $table->id();
             $table->string('tag_name');
+            $table->string('slug');
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

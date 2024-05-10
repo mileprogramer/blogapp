@@ -1,7 +1,7 @@
 @extends('./adminDashboard/master')
 
 @section('title')
-    All Posts
+    All tags
 @endsection
 
 @section('favicon')
@@ -32,8 +32,8 @@
                     <div class="card col-4 p-0">
                         <div class="card-header">Tag name: <h4 class="d-inline">{{ $tag["tag_name"] }}</h4> </div>
                         <div class="card-footer">
-                            <a href="/admin/delete-tag/{{ $tag["tag_name"] }}" class="btn btn-danger">Delete</a>
-                            <a href="/admin/edit-tag/{{ $tag["tag_name"] }}" class="btn btn-warning">Edit</a>
+                            <a href="/admin/delete-tag/{{ $tag["slug"] }}" class="btn btn-danger">Delete</a>
+                            <a href="/admin/edit-tag/{{ $tag["slug"] }}" class="btn btn-warning">Edit</a>
                         </div>
                     </div>
                 @endforeach

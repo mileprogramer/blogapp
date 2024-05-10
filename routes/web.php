@@ -53,17 +53,16 @@ Route::get('/admin/categories', [CategoryController::class, 'index']);
 Route::view('/admin/add-category', "adminDashboard.category.add_category");
 Route::get("/admin/category/delete/{name_category}", [CategoryController::class, "destroy"]);
 Route::get("/admin/category/return/{name_category}", [CategoryController::class, "retunCategory"]);
-
 Route::get("/admin/category/edit/{name_category}", function($category) {
     return view("adminDashboard.category.edit_category", ["name_category"=>$category]);
 });
-
 Route::post('/admin/add-category', [CategoryController::class, 'store']);
 Route::post('/admin/edit-category/', [CategoryController::class, 'edit']);
 
 // TAGS
 Route::get('/admin/tags', [TagController::class, 'index']);
-Route::get('/admin/edit-tag/{tag_name}', [TagController::class, 'edit']);
+Route::get('/admin/edit-tag/{slug}', [TagController::class, 'edit']);
 Route::view('/admin/add-tag', "adminDashboard.tag.add_tag");
 Route::post('/admin/edit-tag/', [TagController::class, 'edit']);
 Route::post('/admin/add-tag/', [TagController::class, 'store']);
+Route::get('/admin/delete-tag/{slug}', [TagController::class, 'destroy']);

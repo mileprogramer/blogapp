@@ -27,7 +27,7 @@
       <div class="page-wrapper">
           <div class="container">
                 <h1 class="p-3">Edit tag</h1>
-                @include('adminDashboard.tag.form_edit_tag', ["tag_name"=>$tag_name])
+                @include('adminDashboard.tag.form_edit_tag', ["tag"=>$tag])
           </div>
       </div>
       <!-- End Page wrapper  -->
