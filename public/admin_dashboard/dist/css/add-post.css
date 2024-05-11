@@ -1,0 +1,19 @@
+.searched-result{
+    position: absolute;
+    top: 100%;
+    left: 1%;
+    right: +1%;
+    box-sizing: border-box;
+    background-color: white;
+    padding: 5px;
+    z-index: 99999;
+    height: auto;
+}
+.searched-result:empty{
+    display: none;
+}
+.searched-result div{
+    cursor: pointer;
+    padding: 2px;
+    border-bottom: 1px solid #000;
+}
