@@ -6,7 +6,6 @@ use App\Models\Tag;
 use Exception;
 use Illuminate\Http\Request;
 use App\Helpers\SlugHelper;
-use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class TagController extends Controller
@@ -44,76 +43,70 @@ class TagController extends Controller
                 'output' => ['success' => 'You successfully added the new tag']
             ]);
 
-        } catch (Exception $error) {
+        } catch (\Exception $error) {
             return redirect()->back()->withInput()->withErrors(['error' => $error->getMessage()]);
         }
     }
 
-    public function edit(Request $request, $slug = null)
+    public function edit($slug = null)
     {
-        // GET 
         try {
-            if ($request->method("GET") === "GET") {
-                $tag = Tag::where("slug", $slug)->first();
-                if (!$tag) {
-                    throw new Exception("There is not tag with this name GET");
-                }
-                return view("adminDashboard.tag.edit_tag", ["tag" => $tag->toArray()]);
+            $tag = Tag::where("slug", $slug)->first();
+            if (!$tag) {
+                throw new Exception("There is not tag with this name GET");
             }
+            return view("adminDashboard.tag.edit_tag", ["tag" => $tag->toArray()]);
         } 
-        catch (Exception $error) {
+        catch (\Exception $error) {
             return redirect()->back()->withInput()->withErrors(['error' => $error->getMessage()]);
         }
-        // POST
-        $new_tag_name = $request->input("new_tag_name");
-        $new_slug = $request->input("new_slug");
+    }
+
+    public function update(Request $request)
+    {
         try{
             
             $old_tag_name = $request->input("old_tag_name");
             $tag = Tag::where("tag_name", $old_tag_name)->first();
             if (!$tag) {
                 throw new Exception("There is not tag with this name");
+            }         
+
+            $rules = [];
+
+            if ($request->filled('new_tag_name') && $request->input('new_tag_name') !== $tag->tag_name) {
+                $rules['new_tag_name'] = 'string|min:3|unique:tag,tag_name';
             }
-            $request->validate([
-                'new_tag_name' => ["string", "min:3", "unique:tag, tag_name", function ($attribute, $value, $fail) use ($request) {
-                    if ($request->filled('new_slug')) {
-                        return;
-                    }
-                    // apply the different validation
-                    $old_tag_name = $request->input('old_tag_name');
-                    if ($value === $old_tag_name) {
-                        $fail("The new tag name must be different from the old tag name.");
-                    }
-                }],
-                "old_tag_name" => ["required", "string"],
-                "new_slug"=>["min:3", "unique:tag, slug"]
-            ]);
-            $slug = $new_slug ?? $tag->toArry()["slug"]; // user does not have to change the slug
-            $tag->tag_name = $new_tag_name;
-            $tag->slug = $slug;
+        
+            if ($request->filled('new_slug') && $request->input('new_slug') !== $tag->slug) {
+                $rules['new_slug'] = 'string|min:3|unique:tag,slug';
+            }
+            
+            (empty($rules))? throw new Exception("You did not change anything") : $request->validate($rules);
+            (isset($rules['new_tag_name']))? $tag->tag_name = $request->input('new_tag_name') : null;
+            (isset($rules['new_slug']))? $tag->slug = $request->input("new_slug") : null;
             $tag->save();
             return view("adminDashboard.tag.edit_tag", ["output" => ["success" => "You succesfully changed the tag"], "tag" => $tag]);
         
         }
-        catch (Exception $error) {
+        catch (\Exception $error) {
             return redirect()->back()->withInput()->withErrors(['error' => $error->getMessage()]);
         }
     }
 
-    public function retunCategory($category)
+    public function returnTag($tag_name)
     {
-
-        $is_exist_category = Tag::where('tag_name', $category)->first();
+        $tag = Tag::where('tag_name', $tag_name)->first();
         try {
-            if ($is_exist_category !== null) {
-                $is_exist_category->active = 1;
-                $is_exist_category->save();
-                return view('adminDashboard.category.add_category', ['output' => ['success' => 'Successfully returned category', "name_category" => $is_exist_category["name_category"]]]);
+            if ($tag === null) {
+                throw new Exception("There is not such category with this name");
             }
-            dd($is_exist_category);
-            throw new Exception("There is not such category with this name");
-        } catch (Exception $error) {
-            abort(404);
+            $tag->active = 1;
+            $tag->save();
+            return view('adminDashboard.category.add_category', ['output' => ['success' => 'Successfully returned tag', "tag_name" => $tag->tag_name]]);
+            
+        } catch (\Exception $error) {
+            abort(404, $error->getMessage());
         }
     }
 
@@ -128,10 +121,10 @@ class TagController extends Controller
             $tag->active = 0;
             $tag->save();
 
-            session(["output" => "Succsfully deleted tag (you can returned tag by try adding new tag)"]);
+            session(["success" => "Successfully deleted tag (you can returned tag by try adding new tag)"]);
             return redirect("/admin/tags");
 
-        } catch (Exception $error) {
+        } catch (\Exception $error) {
             abort(404, $error);
         }
     }
