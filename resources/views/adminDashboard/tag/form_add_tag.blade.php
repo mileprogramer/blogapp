@@ -21,7 +21,7 @@
         @elseif(isset($output["return_tag"]))
             <div class="alert alert-warning">
                 <p class="d-inline">{{$output["return_tag"]}}</p>
-                <a href="/admin/tag/return/{{ $output["tag_name"] }}" class="btn btn-primary">Return Tag {{$output["tag_name"]}}</a>
+                <a href="/admin/return-tag/{{ $output["tag_name"] }}" class="btn btn-primary">Return Tag {{$output["tag_name"]}}</a>
                 <img class="d-inline float-end btn-close-alert" src="{{ asset('img/close-alert.svg') }}" alt=""
                     style="width: 30px; margin-top: -6px;">
             </div>
