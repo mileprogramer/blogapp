@@ -1,27 +1,32 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
-use App\Models\Post;
+
+use App\Http\Controllers\Controller;
+use App\Models\Tag;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class TagController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $all_posts = Post::all();
-        dd($all_posts);
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view("adminDashboard.post.add_post");
+        $tag_name = $request->query("tag_name");
+        if($tag_name !== null){
+            $tag = Tag::where("tag_name", "like" ,"%$tag_name%")->get();
+            if($tag){
+                return $tag->toArray();
+            }
+            else{
+                return ['error' => 'Tag not found'];
+            }
+        }
+        else return Tag::all()->toArray();
     }
 
     /**
@@ -36,14 +41,6 @@ class PostController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
     {
         //
     }
