@@ -34,6 +34,9 @@
                         <img class="d-inline float-end btn-close-alert" src="{{ asset('img/close-alert.svg') }}"
                             alt="" style="width: 30px; margin-top: -6px;">
                     </div>
+                    @php
+                        session()->forget('success');
+                    @endphp
                 @endif
                 <div class="row gap-3">
                     @foreach ($all_tags as $tag)
