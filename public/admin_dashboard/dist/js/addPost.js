@@ -1,84 +1,40 @@
-(function(){
+function start(){
 
-    let selectedTags = [];
-    let selectedCategory = [];
+    let btnAddPost = document.getElementById("addPostBtn");
+    let alertMistake = document.querySelector(".alert-danger");
+    let alertSuccess = document.querySelector(".alert-success");
+    btnAddPost.addEventListener("click", addPost);
 
-    let tagsInput = document.querySelector("#tagsInput");
-    let categoryInput = document.querySelector("#categoryInput");
+    function addPost(event){
+        event.preventDefault();
+        let category = categoryData.data;
+        let tags = tagsSelected.data;
+        let title = document.getElementById("title");
+        let body = document.getElementById("body");
+        let slug = document.getElementById("slug");
+        let csrfToken = document.querySelector("input[name='_token']").value;
 
-    let tagsResult = document.querySelector("#tags-result");
-    let categoryResult = document.querySelector("#category-result");
+        let fd = new FormData();
+        fd.append("category", category);
+        fd.append("tags", tags);
+        fd.append("title", title.value);
+        fd.append("body", body.value);
+        fd.append("slug", slug.value);
 
-    let searchedResult = null;
-
-    tagsInput.oninput = function(){
-        getData(tagsInput, tagsResult);
-    }
-
-    categoryInput.oninput = function(){
-        getData(categoryInput, categoryResult);
-    }
-
-    function getData(input, resultDiv){
-        resultDiv.innerHTML = "Loading result";
-        if(input.value < 2) return ;
-        try{
-            if(input.getAttribute("data-active") === "tags"){
-                APIService.getTags(input.value)
-                .then((data)=>{
-
-                    insertHTML(data, resultDiv);
-                })
+        APIService.addPost(fd, csrfToken)
+        .then((data)=>{
+            if(alertSuccess.classList.contains("d-none")){
+                alertSuccess.classList.remove("d-none");
             }
-            else if(input.getAttribute("data-active") === "category"){
-                APIService.getCategories(input.value)
-                .then((data)=>{
-                    insertHTML(data, resultDiv);
-                })
+            alertSuccess.innerHTML = `<li>${data}</li>`;
+        })
+        .catch((error)=>{
+            if(alertMistake.classList.contains("d-none")){
+                alertMistake.classList.remove("d-none");
             }
-        }   
-        catch(error){
-            console.log(error);
-        }
-    }
-
-    function insertHTML(res, resultDiv){
-        let html = ``;
-        if(res.length === 0){
-            return resultDiv.innerHTML = "No result for the search term";
-        } 
-        res.forEach(element => {
-            html += `
-                <div>${element["tag_name"]}</div>
-            `
+            alertMistake.innerHTML = `<li>${error}</li>`;
         });
-        resultDiv.innerHTML = html;
-        selectSearchedResult(resultDiv.id);
-        
     }
-
-    function selectSearchedResult(resultDivId){
-        searchedResult = document.querySelectorAll("#"+resultDivId+" div");
-        addClickResult(searchedResult);
-    }
-
-    function addClickResult(searchedResult){
-        for(let i = 0; i<searchedResult.length; i++){
-            searchedResult[i].onclick = addTagOrCategory;
-        }
-    }
-
-    function addTagOrCategory(){
-        let position = selectedTags.indexOf(this.textContent);
-        if(position === -1){
-            this.style.backgroundColor = "tomato";
-            selectedTags.push(this.textContent);
-        }
-        else{
-            selectedTags.splice(position, 1);
-            this.style.backgroundColor = "white";
-        }
-        
-    }
-})()
+}
+start();
 
