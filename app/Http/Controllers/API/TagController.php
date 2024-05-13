@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use App\Models\Tag;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
@@ -15,7 +16,6 @@ class TagController extends Controller
      */
     public function index(Request $request)
     {
-
         $tag_name = $request->query("tag_name");
         if($tag_name !== null){
             $tag = Tag::where("tag_name", "like" ,"%$tag_name%")->get();
@@ -42,7 +42,15 @@ class TagController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            
+            $post = Post::where("id_post", $id)->first();
+            dd($post);
+
+
+        } catch (\Throwable $th) {
+            
+        }
     }
 
     /**
