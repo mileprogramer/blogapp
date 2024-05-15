@@ -1,4 +1,4 @@
-<form class="form-horizontal" action="add-category" method ="POST">
+<form class="form-horizontal" action="/admin/add-category" method ="POST">
     @csrf
     <div class="card-body">
         @if (isset($output["success"]))
