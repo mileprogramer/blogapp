@@ -13,10 +13,11 @@ class NewUserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table("user")->insert([
+        DB::table("users")->insert([
             "name"=>"Nemanja",
             "last_name"=>"Milic",
             "role"=>"author",
+            "username"=>"mile",
         ]);
     }
 }

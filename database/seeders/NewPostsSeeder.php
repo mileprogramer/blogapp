@@ -13,7 +13,7 @@ class NewPostsSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('post')->insert([
+        DB::table('posts')->insert([
             [
                 "id_category" => 1,
                 "id_author" => 1,
