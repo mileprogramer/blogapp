@@ -1,4 +1,4 @@
-<form class="form-horizontal" action="/admin/add-tag" method ="POST">
+<form class="form-horizontal" action="/admin/add-tag/" method ="POST">
     @csrf
     <div class="card-body">
 
