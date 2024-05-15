@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comment', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('id_parent_comment');
             $table->bigInteger('id_post');
-            $table->foreign('id_post')->references('id')->on('post');
+            $table->foreign('id_post')->references('id')->on('posts');
             $table->timestamps();
         });
     }
