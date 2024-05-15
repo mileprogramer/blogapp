@@ -36,7 +36,23 @@ class APIService
     static getTagsForPost(idPost){
         return new Promise((resolve, reject)=>{
             let xhr = new XMLHttpRequest();
-            xhr.open("GET", `http://127.0.0.1:8000/api/tags/post=${idPost}`);
+            xhr.open("GET", `http://127.0.0.1:8000/api/post/${idPost}/tags`);
+            xhr.send();
+            xhr.addEventListener("readystatechange", function(){
+                if(xhr.readyState === 4 && xhr.status === 200){
+                    resolve(JSON.parse(xhr.responseText));
+                }
+                else if(xhr.readyState === 4 && xhr.status > 300){
+                    reject(xhr.responseText);
+                }
+            })
+        })
+    }
+
+    static getCategoryForPost(postId){
+        return new Promise((resolve, reject)=>{
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", `http://127.0.0.1:8000/api/post/${postId}/category`);
             xhr.send();
             xhr.addEventListener("readystatechange", function(){
                 if(xhr.readyState === 4 && xhr.status === 200){
@@ -62,7 +78,7 @@ class APIService
                     resolve(JSON.parse(xhr.responseText));
                 }
                 else if(xhr.readyState === 4 && xhr.status > 300){
-                    reject(xhr.responseText);
+                    reject(JSON.parse(xhr.responseText));
                 }
             })
         })

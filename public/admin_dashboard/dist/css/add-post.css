@@ -1,3 +1,6 @@
+.form-group{
+    display: block !important;
+}
 .searched-result{
     position: absolute;
     top: 100%;
@@ -16,4 +19,11 @@
     cursor: pointer;
     padding: 2px;
     border-bottom: 1px solid #000;
+}
+#category-selected span{
+    font-size: 16px;
+}
+
+#tags-selected span{
+    font-size: 16px;
 }

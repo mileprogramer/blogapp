@@ -3,7 +3,6 @@ function start(){
     class TagSearch {
         constructor() {
             this.selectedTags = this.loadTags();
-            this.postId = document.querySelector("#post-id");
             this.tagsInput = document.querySelector("#tagsInput");
             this.tagsResult = document.querySelector("#tags-result");
             this.addedTags = document.querySelector("#tags-selected");
@@ -13,9 +12,13 @@ function start(){
         }
         
         loadTags(){
-            if(this.postId){
+            let postId = document.querySelector("#post-id");
+            if(postId){
                 try {
-                    APIService.getTagsForPost().then((data)=> this.selectedTags = data);
+                    APIService.getTagsForPost(postId.value).then((data)=> {
+                        this.selectedTags = data.map((element, index)=> element["tag_name"]);
+                        this.setAddedTags();
+                    });
                 } catch (error) {
                     console.log(error);
                 }

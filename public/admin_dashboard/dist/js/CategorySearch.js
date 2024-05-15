@@ -2,7 +2,6 @@ function start() {
     class CategorySearch {
         constructor() {
             this.selectedCategory = this.loadCategory();
-            this.postId = document.querySelector("#post-id");
             this.categoryInput = document.querySelector("#categoryInput");
             this.categoryResult = document.querySelector("#category-result");
             this.showSelectedCategory = document.querySelector("#category-selected");
@@ -12,10 +11,13 @@ function start() {
         }
 
         loadCategory() {
-            if (this.postId) {
+            let postId = document.querySelector("#post-id");
+            if (postId) {
                 try {
-                    APIService.getCategoryForPost().then(data => {
-                        this.selectedCategory = data;
+                    APIService.getCategoryForPost(postId.value).then(data => {
+                        let div = document.createElement("div");
+                        div.textContent = data["name_category"];
+                        this.setCategory(div);
                     })
                 } catch (error) {
                     console.log(error);
@@ -62,6 +64,7 @@ function start() {
         }
         
         colorSetedCategory(element){
+            if(this.categoryResultDivs === null) return;
             this.categoryResultDivs.forEach((element)=>{
                 element.style.backgroundColor = "";
             });
