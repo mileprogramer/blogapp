@@ -31,10 +31,10 @@
         <div class="alert alert-danger d-none"></div>
         <div class="alert alert-success d-none"></div>
         <div class="form-group row">
-            <input type="hidden" id="postId" value="">
+            <input type="hidden" id="post-id" value="{{ $post["id"] }}">
             <label for="fname" class="col-sm-3 text-start control-label col-form-label">Title</label>
             <div class="col-sm-9">
-                <input id="title" name="title" type="text" class="form-control"
+                <input id="title" name="title" value="{{$post["title"]}}" type="text" class="form-control"
                     placeholder="Insert the name for the tag" required />
             </div>
         </div>
@@ -42,7 +42,7 @@
             <input type="hidden" id="postId" value="">
             <label for="fname" class="col-sm-3 text-start control-label col-form-label">Slug</label>
             <div class="col-sm-9">
-                <input id="slug" name="slug" type="text" class="form-control"
+                <input id="slug" value="{{$post["slug"]}}" name="slug" type="text" class="form-control"
                     placeholder="Insert the name for the tag" required />
                 <em>Do not use capital letter. Just lower letters and numbers</em></br>
                 <em>If your slug has more words. Do not use space insted use "-"</em>
@@ -51,7 +51,7 @@
         <div class="form-group row">
             <label for="fname" class="col-sm-3 text-start control-label col-form-label">Text of post</label>
             <div class="col-sm-9">
-                <textarea id="body" class="form-control" name="body" id="" cols="30" rows="10" placeholder="Type the text for the post"></textarea>
+                <textarea id="body" class="form-control" name="body" id="" cols="30" rows="10" placeholder="Type the text for the post">{{ $post["body"] }}</textarea>
             </div>
         </div>
         <div class="form-group row">
@@ -75,7 +75,7 @@
     <div class="border-top">
         <div class="card-body">
             <button id="addPostBtn" type="submit" class="btn btn-primary">
-                Submit
+                Edit
             </button>
         </div>
     </div>

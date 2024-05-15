@@ -27,9 +27,14 @@
       <div class="page-wrapper">
           <div class="container">
               <h1 class="p-3">All posts</h1>
+              @if (session('success'))
+                <div class="alert alert-success">
+                    <p>{{ session("success") }}</p>
+                </div>
+              @endif
               <div class="row gap-3">
                 @foreach ($all_posts as $post)
-                    @include('adminDashboard.layouts.post', ["post"=> $post])
+                    @include('adminDashboard.post.post', ["post"=> $post])
                 @endforeach
               </div>
           </div>

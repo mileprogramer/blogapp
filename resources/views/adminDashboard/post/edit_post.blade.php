@@ -1,7 +1,7 @@
 @extends('./adminDashboard/master')
 
 @section('title')
-    Add Posts
+    Edit post
 @endsection
 
 @section('favicon')
@@ -9,7 +9,7 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href={{asset("admin_dashboard/dist/css/add-post.css")}}>
+<link rel="stylesheet" href={{asset("admin_dashboard/dist/css/add-post.css")}}>
     @include('adminDashboard.partials.css')
 @endsection
 
@@ -27,8 +27,8 @@
       <!-- Page wrapper  -->
       <div class="page-wrapper">
           <div class="container">
-                <h1 class="p-3">Add post</h1>
-                @include('adminDashboard.post.form_add_post')
+                <h1 class="p-3">Edit post</h1>
+                @include('adminDashboard.post.form_edit', ["post"=>$post])
           </div>
       </div>
       <!-- End Page wrapper  -->
@@ -38,8 +38,8 @@
 @section('js')
   <!-- End Wrapper -->
   <script src="{{ asset('admin_dashboard/dist/js/APIService.js') }}"></script>
-  <script src="{{ asset('admin_dashboard/dist/js/TagsSearch.js') }}"></script>
   <script src="{{ asset('admin_dashboard/dist/js/CategorySearch.js') }}"></script>
+  <script src="{{ asset('admin_dashboard/dist/js/TagsSearch.js') }}"></script>
   <script src="{{ asset('admin_dashboard/dist/js/addPost.js') }}"></script>
   @include('adminDashboard.partials.js')
 @endsection

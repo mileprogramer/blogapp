@@ -4,14 +4,20 @@
     </div>
     <div class="card-body">
         <p>{{ substr($post["body"], 0, 40) }}</p>
-        <em>Author: {{ $post["author"] }}</em>
+        <h3>Tags</h3>
+        <div>
+            @foreach ($post["tags"] as $single_tag)
+                <span class="bg-info rounded-pill p-1 text-white">{{ $single_tag["tag_name"] }}</span>
+            @endforeach
+        </div>
+        <h3 class="mt-3">Category</h3>
+        <span class="bg-info rounded-pill p-1 text-white">{{ $post["category"]["name_category"] }}</span>
+        <hr>
+        <em>Author: {{ $post["user"]["username"] }}</em>
     </div>
     <div class="card-footer">
-        <button class="btn btn-danger">
-            <a href="/admin/post/{{ $post["slug"] }}"></a>Delete
-        </button>
-        <button class="btn btn-warning">
-            <a href="/admin/post/{{ $post["slug"] }}"></a>Edit
-        </button>
+        <a class="btn btn-danger" href="/admin/delete-post/{{ $post["slug"] }}">Delete</a>
+        <a class="btn btn-warning" href="/admin/edit-post/{{ $post["slug"] }}">Edit</a>
+        <a class="btn btn-primary" href="/admin/edit-post/{{ $post["slug"] }}">See post</a>
     </div>
 </div>
