@@ -1,7 +1,7 @@
 @extends('./adminDashboard/master')
 
 @section('title')
-    All Posts
+    Add Tag
 @endsection
 
 @section('favicon')
