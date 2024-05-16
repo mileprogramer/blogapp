@@ -74,6 +74,23 @@ class APIService
             xhr.send(formData);
             xhr.addEventListener("readystatechange", function(){
                 if(xhr.readyState === 4 && xhr.status === 200){
+                    resolve(JSON.parse(xhr.responseText));
+                }
+                else if(xhr.readyState === 4 && xhr.status > 300){
+                    reject(JSON.parse(xhr.responseText));
+                }
+            })
+        })
+    }
+
+    static editPost(formData, csrf){
+        return new Promise((resolve, reject)=>{
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", `http://127.0.0.1:8000/api/post/edit`);
+            xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+            xhr.send(formData);
+            xhr.addEventListener("readystatechange", function(){
+                if(xhr.readyState === 4 && xhr.status === 200){
                     console.log(xhr.responseText);
                     resolve(JSON.parse(xhr.responseText));
                 }
