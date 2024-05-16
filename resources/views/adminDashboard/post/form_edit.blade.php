@@ -1,4 +1,4 @@
-<form class="form-horizontal" action="/admin/add-tag" method ="POST">
+<form class="form-horizontal" action="/admin/edit-post/" method ="POST">
     @csrf
     <div class="card-body">
 
@@ -31,7 +31,7 @@
         <div class="alert alert-danger d-none"></div>
         <div class="alert alert-success d-none"></div>
         <div class="form-group row">
-            <input type="hidden" id="post-id" value="{{ $post["id"] }}">
+            <input type="hidden" id="post-id" name="post-id" value="{{ $post["id"] }}">
             <label for="fname" class="col-sm-3 text-start control-label col-form-label">Title</label>
             <div class="col-sm-9">
                 <input id="title" name="title" value="{{$post["title"]}}" type="text" class="form-control"
@@ -74,7 +74,7 @@
     </div>
     <div class="border-top">
         <div class="card-body">
-            <button id="addPostBtn" type="submit" class="btn btn-primary">
+            <button id="editPostBtn" type="submit" class="btn btn-primary">
                 Edit
             </button>
         </div>
