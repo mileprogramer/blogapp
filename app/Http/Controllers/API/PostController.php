@@ -8,14 +8,9 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\PostTag;
 use App\Models\Tag;
-use DateTime;
-use Dotenv\Validator;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
-use stdClass;
 
 class PostController extends Controller
 {
@@ -24,7 +19,6 @@ class PostController extends Controller
      */
     public function index()
     {
-        return "Nemanjajjjjafjajea";
     }
 
     /**
@@ -78,11 +72,11 @@ class PostController extends Controller
                 $post_tag->tag_id = $tags[$i]->id;
                 $post_tag->save();
             }
-            return ["success", $post];
+            return response()->json(["success"=>"Successfully added new post"], 200);
 
         } catch (\Exception $e) {
 
-            return [$e->getMessage()];
+            return response()->json([$e->getMessage()], 403);
         }
     }
 
@@ -105,9 +99,45 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        try {
+
+            $post = Post::findOrFail($request->input('postId'));
+            $category = Category::where("id", $post->id_category)->first()->toArray();
+            $new_category = null;
+            $rules = [];
+
+            if($request->filled('title') && $request->input('title') !== $post->title){
+                $rules['title'] = 'string|min:3';
+            }
+
+            if($request->filled('body') && $request->input('body') !== $post->body){
+                $rules['body'] = 'string|min:10';
+            }
+
+            if($request->filled('slug') && $request->input('slug') !== $post->slug){
+                $rules['new_tag_name'] = 'string|min:3|unique:posts,slug';
+            }
+
+            if($request->filled('category') && $request->input('category') !== $category["name_category"]){
+                $new_category = Category::findOrFail($request->input("category"));
+            }
+
+            
+
+            $tags = PostTag::where("post_id", $post->id)->get();
+            
+
+        } catch (ModelNotFoundException $exception) {
+
+            return response()->json(['error' => 'Not found'], 404);
+
+        } catch (\Exception $exception) {
+
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+
     }
 
     /**
@@ -117,4 +147,40 @@ class PostController extends Controller
     {
         //
     }
+
+    public function getPostCategory(string $id)
+    {   
+        try {
+            $post = Post::where("id", $id)->where("active", 1)->first()->toArray();
+            if($post === null){
+                throw new Exception("There is not such a post");
+            }
+            $category = Category::where("id", $post["id_category"])->first();
+            return ["name_category" => $category->name_category];
+
+        } catch (\Exception $error) {
+            return [$error->getMessage()];
+        }
+    }
+
+    public function getPostTags(string $id)
+    {   
+        try {
+            $tags = PostTag::with(['tag:id,tag_name'])->where("post_id", $id)->get();
+            if($tags === null){
+                throw new Exception("There is not such a post");
+            }
+            $tags= $tags->transform(function ($postTag) {
+                return [
+                    'id' => $postTag->tag->id,
+                    'tag_name' => $postTag->tag->tag_name
+                ];
+            });
+            return $tags;
+
+        } catch (\Exception $error) {
+            return [$error->getMessage()];
+        }
+    }
+
 }
