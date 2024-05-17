@@ -40,6 +40,6 @@
   <script src="{{ asset('admin_dashboard/dist/js/APIService.js') }}"></script>
   <script src="{{ asset('admin_dashboard/dist/js/TagsSearch.js') }}"></script>
   <script src="{{ asset('admin_dashboard/dist/js/CategorySearch.js') }}"></script>
-  <script src="{{ asset('admin_dashboard/dist/js/addPost.js') }}"></script>
+  <script src="{{ asset('admin_dashboard/dist/js/addEditPost.js') }}"></script>
   @include('adminDashboard.partials.js')
 @endsection
