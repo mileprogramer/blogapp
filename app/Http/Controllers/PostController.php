@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -12,8 +15,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $all_posts = Post::all();
-        dd($all_posts);
+        $all_posts = Post::with(['user:id,username', 'tags:id,tag_name', "category:name_category,id"])->where("active", 1)->get()->toArray();
+        return view("adminDashboard.post.all_posts", ["all_posts" => $all_posts]);
     }
 
     /**
@@ -29,7 +32,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // This is done in API/PostController.php
     }
 
     /**
@@ -43,15 +46,24 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $slug)
     {
-        //
+        try {
+            $post = Post::where("slug", $slug)->first();
+            if($post === null){
+                throw new Exception("There is not such a post");
+            }
+            return view("adminDashboard.post.edit_post", ["post"=>$post]);
+        } catch (\Exception $error) {
+            abort(404, $error->getMessage());
+        }
+        
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
         //
     }
@@ -59,8 +71,18 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $slug)
     {
-        //
-    }
+        try {
+            $post = Post::where("slug", $slug)->first();
+
+            if($post === null) throw new Exception("There is not a post with that slug");
+            $post->active = 0;
+            $post->save();
+            return redirect()->back()->with("success", "Successfully deleted post");
+        } catch (\Exception $error) {
+            return redirect()->back()->with("mistake", "Some mistake happend contact support");
+        }
+
+    }   
 }
