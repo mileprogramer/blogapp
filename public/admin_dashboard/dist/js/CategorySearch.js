@@ -1,6 +1,7 @@
 function start() {
     class CategorySearch {
         constructor() {
+            this.currentCategory = null;
             this.selectedCategory = this.loadCategory();
             this.categoryInput = document.querySelector("#categoryInput");
             this.categoryResult = document.querySelector("#category-result");
@@ -15,6 +16,7 @@ function start() {
             if (postId) {
                 try {
                     APIService.getCategoryForPost(postId.value).then(data => {
+                        this.currentCategory = data["name_category"];
                         let div = document.createElement("div");
                         div.textContent = data["name_category"];
                         this.setCategory(div);
@@ -32,13 +34,15 @@ function start() {
         
             try {
                 let data = await APIService.getCategories(inputValue);
-                this.insertHTML(data, resultDiv);
+                let categories = data.filter(element => element["name_category"] !== this.currentCategory);
+                this.insertHTML(categories, resultDiv);
             } catch (error) {
                 console.log(error);
             }
         }
 
         insertHTML(res, resultDiv) {
+            console.log(this.currentCategory);
             let html = "";
             if (res.length === 0) {
                 resultDiv.innerHTML = "No result for the search term";
