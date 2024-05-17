@@ -17,6 +17,7 @@ function start(){
                 try {
                     APIService.getTagsForPost(postId.value).then((data)=> {
                         this.selectedTags = data.map((element, index)=> element["tag_name"]);
+                        tagsSelected.data = [...this.selectedTags];
                         this.setAddedTags();
                     });
                 } catch (error) {

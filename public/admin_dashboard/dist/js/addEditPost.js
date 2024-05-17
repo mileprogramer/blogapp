@@ -17,7 +17,7 @@ function start(){
         fd.append("body", postData.body.value);
         fd.append("slug", postData.slug.value);
 
-        APIService.addPost(fd, csrfToken)
+        APIService.addPost(fd, postData.csrfToken)
         .then((data)=>{
             if(alertSuccess.classList.contains("d-none")){
                 alertSuccess.classList.remove("d-none");
@@ -32,7 +32,7 @@ function start(){
                     body,
                     slug
                 });
-                clearTagsCategory(tagsSelectedDiv, categorySelectedDiv);
+                clearTagsCategory(postData.tagsSelectedDiv, postData.categorySelectedDiv);
                 dispearAlert(alertSuccess);
             }
         })
@@ -61,16 +61,9 @@ function start(){
                 alertSuccess.classList.remove("d-none");
             }
             if(data.success){
-                console.log(data.success);
                 alertSuccess.innerHTML = `<li>${data.success}</li>`;
                 alertMistake.innerHTML = ``;
                 alertMistake.classList.add("d-none");
-                emptyInputData({
-                    title,
-                    body,
-                    slug
-                });
-                clearTagsCategory(tagsSelectedDiv, categorySelectedDiv);
                 dispearAlert(alertSuccess);
             }
         })
@@ -113,7 +106,7 @@ function start(){
         setTimeout(()=>{
             alert.innerHTML = "";
             alert.classList.remove("d-none");
-        }, 3000);
+        }, 6000);
     }
 
     function clearTagsCategory(tagsDiv, categoryDiv){
