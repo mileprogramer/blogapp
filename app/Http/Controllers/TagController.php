@@ -52,7 +52,7 @@ class TagController extends Controller
     {
         try {
             $tag = Tag::where("slug", $slug)->first();
-            if (!$tag) {
+            if ($tag === null) {
                 throw new Exception("There is not tag with this name GET");
             }
             return view("adminDashboard.tag.edit_tag", ["tag" => $tag->toArray()]);
@@ -65,7 +65,6 @@ class TagController extends Controller
     public function update(Request $request)
     {
         try{
-            
             $old_tag_name = $request->input("old_tag_name");
             $tag = Tag::where("tag_name", $old_tag_name)->first();
             if (!$tag) {
@@ -75,13 +74,12 @@ class TagController extends Controller
             $rules = [];
 
             if ($request->filled('new_tag_name') && $request->input('new_tag_name') !== $tag->tag_name) {
-                $rules['new_tag_name'] = 'string|min:3|unique:tag,tag_name';
+                $rules['new_tag_name'] = 'string|min:3|unique:tags,tag_name';
             }
         
             if ($request->filled('new_slug') && $request->input('new_slug') !== $tag->slug) {
-                $rules['new_slug'] = 'string|min:3|unique:tag,slug';
+                $rules['new_slug'] = 'string|min:3|unique:tags,slug';
             }
-            
             (empty($rules))? throw new Exception("You did not change anything") : $request->validate($rules);
             (isset($rules['new_tag_name']))? $tag->tag_name = $request->input('new_tag_name') : null;
             (isset($rules['new_slug']))? $tag->slug = $request->input("new_slug") : null;
