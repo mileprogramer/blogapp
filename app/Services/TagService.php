@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Services;
-
-use App\Models\PostTag;
 use App\Models\Tag;
 
 class TagService
