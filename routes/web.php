@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AddPost;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
@@ -45,7 +44,9 @@ Route::get('/admin', function () {
 
 // POSTS
 Route::get('/admin/posts', [PostController::class, 'index']);
-Route::get('/admin/add-post', [AddPost::class, 'create']);
+Route::get('/admin/add-post', [PostController::class, 'create']);
+Route::get('/admin/delete-post/{slug}', [PostController::class, 'destroy']);
+Route::get('/admin/edit-post/{slug}', [PostController::class, 'edit']);
 
 // Categories
 Route::get('/admin/categories', [CategoryController::class, 'index']);
@@ -62,8 +63,7 @@ Route::post('/admin/edit-category/', [CategoryController::class, 'edit']);
 // TAGS
 Route::get('/admin/tags', [TagController::class, 'index']);
 Route::get('/admin/edit-tag/{slug}', [TagController::class, 'edit']);
-Route::view('/admin/add-tag', "adminDashboard.tag.add_tag");
-Route::get('/admin/edit-tag/{slug}', [TagController::class, 'edit']);
+Route::view('/admin/add-tag/', "adminDashboard.tag.add_tag");
 Route::post('/admin/edit-tag/', [TagController::class, 'update']);
 Route::post('/admin/add-tag/', [TagController::class, 'store']);
 Route::get('/admin/delete-tag/{slug}', [TagController::class, 'destroy']);
