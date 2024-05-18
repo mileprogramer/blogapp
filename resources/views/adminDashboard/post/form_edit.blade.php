@@ -26,7 +26,7 @@
                     style="width: 30px; margin-top: -6px;">
             </div>
         @endif
-        <h4 class="card-title">Fill the form to add new Post</h4>
+        <h4 class="card-title">Fill the form to edit Post</h4>
         <em>When you type the tags or category search result will pop up click on the tags and category you want and then press button add</em>
         <div class="alert alert-danger d-none"></div>
         <div class="alert alert-success d-none"></div>

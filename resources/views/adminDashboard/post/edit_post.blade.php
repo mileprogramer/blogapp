@@ -9,7 +9,7 @@
 @endsection
 
 @section('css')
-<link rel="stylesheet" href={{asset("admin_dashboard/dist/css/add-post.css")}}>
+    <link rel="stylesheet" href={{asset("admin_dashboard/dist/css/add-post.css")}}>
     @include('adminDashboard.partials.css')
 @endsection
 
