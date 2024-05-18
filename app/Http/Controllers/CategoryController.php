@@ -3,8 +3,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\SlugHelper;
 use App\Models\Category;
-use App\Models\Tag;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -18,36 +18,52 @@ class CategoryController extends Controller
     }
 
     public function store(Request $request) {
-        $tag_name = $request->input("tag_name");
-        $tag_exist = Tag::where('tag_name',$tag_name)->first();
+        $category = Category::where('name_category', $request->input("name_category"))->first();
         try{
-            if($tag_exist === null){
-                $new_tag = new Tag();
-                $new_tag->tag_name = $tag_name;
-                $new_tag->save();
-                if($new_tag->id){
-                    return view('adminDashboard.category.add_tag', ['output' => ['success' => 'You successfully added new tag']]);
+            if($category === null){
+                $request->validate([
+                    "name_category"=>"string|min:3|unique:category,name_category"
+                ]);
+
+                $new_category = new Category();
+                $new_category->name_category = $request->input("name_category");
+                $new_category->slug = SlugHelper::generateSlug($request->input("name_category"));
+                $new_category->save();
+                if($new_category->id){
+                    return view('adminDashboard.category.add_category', ['output' => ['success' => 'You successfully added new category']]);
                 }
             }
-            elseif($tag_exist->toArray()["active"] === 0){
-                return view('adminDashboard.category.add_tag', ['output' => ['return_tag' => 'There is already tag with this name but is unactive', "name_category"=>$tag_exist["tag_name"]]]);
+            elseif($category->toArray()["active"] === 0){
+                return view('adminDashboard.category.add_category', ['output' => ['return_category' => 'There is already category with this name but is unactive', "category"=>$category->toArray()]]);
             }
             else{
-                throw new Exception("There is already tag with this name");
+                throw new Exception("There is already category with this name");
             }
 
         }
         catch(Exception $error){
-            return view("adminDashboard.tag.add_tag", ["output"=>["mistake"=>$error->getMessage()]]);
+            return view("adminDashboard.category.add_category", ["output"=>["mistake"=>$error->getMessage()]]);
         }
     }
 
-    public function edit(Request $request)
+    public function edit(Category $category)
+    {
+        return view("adminDashboard.category.edit_category",
+        [
+            "output" => [],
+            "category"=>$category->toArray()
+        ]);
+    }
+
+    public function update(Request $request)
     {
         $name_category = $request->input("name_category");
         $now_name_category = $request->input("now_name_category");
         if($name_category === $now_name_category){
-            return view("adminDashboard.category.edit_category", ["output"=>["mistake"=>"You did not change the value of name category"], "name_category"=>$now_name_category]);
+            return view([
+                "output" => ["mistake"=>"You did not change the value of name category"],
+                "category" => $now_name_category
+            ]);
         }
         try{
             $category = Category::where("name_category", $now_name_category)->first();
@@ -56,8 +72,13 @@ class CategoryController extends Controller
             }
             $category->name_category = $name_category;
             $category->save();
-
-            return view("adminDashboard.category.edit_category", ["output"=>["success"=>"You succesfully changed the category"], "name_category"=>$name_category]);
+            
+            return view("adminDashboard.category.edit_category", [
+                'output' => [
+                    'success' => 'You successfully changed the category'
+                ],
+                'category' => $category->toArray()
+            ]);
             
         }
         catch(Exception $error){
@@ -66,17 +87,15 @@ class CategoryController extends Controller
         
     }
 
-    public function retunCategory($category) {
-
-        $is_exist_category = Category::where('name_category', $category)->first();
+    public function returnCategory($slug) {
         try{
-            if($is_exist_category !== null){
-                $is_exist_category->active = 1;
-                $is_exist_category->save();
-                return view('adminDashboard.category.add_category', ['output' => ['success' => 'Successfully returned category', "name_category"=>$is_exist_category["name_category"]]]);
-
-            }
-            dd($is_exist_category);
+            $category = Category::where('slug', $slug)->firstOrFail();
+            $category->active = 1;
+            $category->save();
+            return view('adminDashboard.category.add_category', [
+                'output' => ['success' => 'Successfully returned category', 
+                "name_category"=>$category["name_category"]]
+            ]);
             throw new Exception("There is not such category with this name");
         }
         catch(Exception $error){

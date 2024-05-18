@@ -103,11 +103,10 @@ class PostController extends Controller
     public function update(Request $request)
     {
         try {
-
             $post = Post::findOrFail($request->input('postId'));
             $category = Category::where("id", $post->id_category)->first()->toArray();
+            $new_category = null;
             $rules = [];
-
             if($request->filled('title') && $request->input('title') !== $post->title){
                 $rules['title'] = 'string|min:3';
             }
@@ -117,41 +116,40 @@ class PostController extends Controller
             }
 
             if($request->filled('slug') && $request->input('slug') !== $post->slug){
-                $rules['new_tag_name'] = 'string|min:3|unique:posts,slug';
+                $rules['slug'] = 'string|min:3|unique:posts,slug';
             }
 
             if($request->filled('category') && $request->input('category') !== $category["name_category"]){
-                $new_category = Category::where("name_category", $request->input("category"))->exists();
-                if($new_category){
-                    $rules['new_category'] = 'unique:category,name_category';
-                }
-                else{
-                    throw new Exception("You must first add a category and then apply");
-                }
+                $rules['category'] = 'unique:category,name_category';
+                $new_category = Category::where("name_category", $request->input("category"))->firstOrFail();
             }
 
             if(empty($request->input("tags"))){
-                return response()->json(['error' => "You must add some tags"], 403);
+                return response()->json([['error' => "You must add some tags"]], 403);
             }
-            $validated_data = $request->validate($rules);
-            ($validated_data["title"])? $post->title = $validated_data["title"] : null;
-            ($validated_data["body"])? $post->body = $validated_data["body"] : null;
-            ($validated_data["slug"])? $post->slug = $validated_data["slug"] : null;
-            ($validated_data["category"])? $post->id_category = Category::findOrFail($request->input('category')) : null;
 
             TagService::existingTags(explode(',', $request->input("tags")));
-            // all tags exist
             $existing_tags_ids = PostTag::where("post_id", $post->id)->pluck("tag_id")->toArray();
             $new_tags_ids = Tag::whereIn("tag_name", explode(',', $request->input("tags")))->pluck("id")->toArray();
             $diff = TagService::compareTags($new_tags_ids, $existing_tags_ids);
-            
-            $postId = $post->id;
-            $insert_data = array_map(function ($tag_id) use ($postId) {
-                return ['tag_id' => $tag_id, 'post_id' => $postId, 'created_at'=>now()];
-            }, $diff["tags_to_add"]);
 
-            PostTag::insert($insert_data);
-            PostTag::where('post_id', $postId)->whereIn('tag_id', $diff["tags_to_remove"])->delete();
+            (empty($rules) && empty($diff))? throw new Exception("You did not change anything") : $request->validate($rules);
+            (isset($rules["title"]))? $post->title = $request->input("title") : null;
+            (isset($rules["body"]))? $post->body = $request->input("body") : null;
+            (isset($rules["slug"]))? $post->slug = $request->input("slug") : null;
+            (isset($rules["category"]))? $post->id_category = $new_category->id : null;
+            
+            $post->save();
+
+            if(!empty($diff) && isset($diff)){
+                $postId = $post->id;
+                $insert_data = array_map(function ($tag_id) use ($postId) {
+                    return ['tag_id' => $tag_id, 'post_id' => $postId, 'created_at'=>now()];
+                }, $diff["tags_to_add"]);
+    
+                PostTag::insert($insert_data);
+                PostTag::where('post_id', $postId)->whereIn('tag_id', $diff["tags_to_remove"])->delete();
+            }
 
             return response()->json(["success"=>"Successfully edited post"]);
 
