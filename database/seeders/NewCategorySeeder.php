@@ -16,18 +16,22 @@ class NewCategorySeeder extends Seeder
     {
         $category1 = new Category();
         $category1->name_category = "Sports";
+        $category1->slug = "sports";
         $category1->save();
 
         $category2 = new Category();
         $category2->name_category = "Politics";
+        $category2->slug = "politics";
         $category2->save();
         
         $category3 = new Category();
         $category3->name_category = "Programming";
+        $category3->slug = "programming";
         $category3->save();
         
         $category4 = new Category();
         $category4->name_category = "Fashion";
+        $category4->slug = "fashion";
         $category4->save();
 
     }
