@@ -23,7 +23,6 @@ function start(){
                 alertSuccess.classList.remove("d-none");
             }
             if(data.success){
-                console.log(data.success);
                 alertSuccess.innerHTML = `<li>${data.success}</li>`;
                 alertMistake.innerHTML = ``;
                 alertMistake.classList.add("d-none");
@@ -67,11 +66,14 @@ function start(){
                 dispearAlert(alertSuccess);
             }
         })
-        .catch((error)=>{
+        .catch((errors)=>{
             if(alertMistake.classList.contains("d-none")){
                 alertMistake.classList.remove("d-none");
             }
-            alertMistake.innerHTML = `<li>${error}</li>`;
+            if(errors instanceof Array){
+                return alertMistake.innerHTML = errors.map(singleError => `<li>${singleError.error}</li>`);
+            }
+            return alertMistake.innerHTML = `<li>${errors.error}</li>`;
         });
     }
 
@@ -105,7 +107,7 @@ function start(){
     function dispearAlert(alert){
         setTimeout(()=>{
             alert.innerHTML = "";
-            alert.classList.remove("d-none");
+            alert.classList.add("d-none");
         }, 6000);
     }
 
