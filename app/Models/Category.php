@@ -20,4 +20,9 @@ class Category extends Model
         return $this->hasMany(Post::class, "id_author", 'id');
     }
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
 }
