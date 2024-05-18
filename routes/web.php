@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
@@ -52,13 +53,11 @@ Route::get('/admin/edit-post/{slug}', [PostController::class, 'edit']);
 Route::get('/admin/categories', [CategoryController::class, 'index']);
 
 Route::view('/admin/add-category', "adminDashboard.category.add_category");
-Route::get("/admin/category/delete/{name_category}", [CategoryController::class, "destroy"]);
-Route::get("/admin/category/return/{name_category}", [CategoryController::class, "retunCategory"]);
-Route::get("/admin/category/edit/{name_category}", function($category) {
-    return view("adminDashboard.category.edit_category", ["name_category"=>$category]);
-});
+Route::get("/admin/delete-category/{name_category}", [CategoryController::class, "destroy"]);
+Route::get("/admin/return-category/{slug}", [CategoryController::class, "returnCategory"]);
+Route::get("/admin/edit-category/{category:slug}", [CategoryController::class, "edit"]);
 Route::post('/admin/add-category', [CategoryController::class, 'store']);
-Route::post('/admin/edit-category/', [CategoryController::class, 'edit']);
+Route::post('/admin/edit-category/', [CategoryController::class, 'update']);
 
 // TAGS
 Route::get('/admin/tags', [TagController::class, 'index']);
