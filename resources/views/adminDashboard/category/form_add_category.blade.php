@@ -18,7 +18,7 @@
         @elseif(isset($output["return_category"]))
             <div class="alert alert-warning">
                 <p class="d-inline">{{$output["return_category"]}}</p>
-                <a href="/admin/category/return/{{ strtolower($output["name_category"]) }}" class="btn btn-primary">Return Category {{$output["name_category"]}}</a>
+                <a href="/admin/return-category/{{$output["category"]["slug"]}}" class="btn btn-primary">Return Category {{$output["category"]["name_category"]}}</a>
                 <img class="d-inline float-end btn-close-alert" src="{{ asset('img/close-alert.svg') }}" alt=""
                     style="width: 30px; margin-top: -6px;">
             </div>

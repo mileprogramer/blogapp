@@ -27,7 +27,8 @@
       <div class="page-wrapper">
           <div class="container">
                 <h1 class="p-3">Edit category</h1>
-                @include('adminDashboard.category.form_edit_category', ["name_category"=>$name_category])
+                @include('adminDashboard.category.form_edit_category', 
+                ["output"=>$output, "category"=>$category])
           </div>
       </div>
       <!-- End Page wrapper  -->

@@ -27,9 +27,9 @@
         <div class="form-group row">
             <label for="fname" class="col-sm-3 text-end control-label col-form-label">Name of category</label>
             <div class="col-sm-9">
-                <input value={{$name_category}} name="name_category" type="text" class="form-control" id="fname"
+                <input value="{{$category["name_category"]}}" name="name_category" type="text" class="form-control" id="fname"
                     placeholder="Insert the name for the category" required />
-                <input name = "now_name_category" type="hidden" value={{$name_category}}>
+                <input name = "now_name_category" type="hidden" value="{{$category["name_category"]}}">
             </div>
         </div>
     </div>
