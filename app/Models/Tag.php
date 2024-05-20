@@ -15,6 +15,11 @@ class Tag extends Model
         'slug'
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public function postTags()
     {
         return $this->hasMany(PostTag::class, 'tag_id');

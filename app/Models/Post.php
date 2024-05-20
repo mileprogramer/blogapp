@@ -26,4 +26,9 @@ class Post extends Model
         return $this->belongsTo(Category::class, "id_category", "id");
     }
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
 }
