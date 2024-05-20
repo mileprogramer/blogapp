@@ -4,7 +4,8 @@
             <div class="col-lg-8">
                 <div class="row">
                     @include('pages.blog.layouts.single_blog_grid', ["posts"=>$posts])
-                    <div class="col-lg-12">
+                    {{ $posts->links() }}
+{{--                     <div class="col-lg-12">
                         <div class="blog-pagination margin-top-10"><!-- blog pagination -->
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination">
@@ -18,7 +19,7 @@
                                 </ul>
                             </nav>
                         </div><!-- //. blog pagination -->
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="col-lg-4">

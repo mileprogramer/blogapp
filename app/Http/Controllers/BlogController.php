@@ -128,7 +128,7 @@ class BlogController extends Controller
     {
 
         $popular_posts = Post::where("active", 1)->orderBy("total_access", "desc")->limit(3)->get();
-        $all_posts = Post::with(['user:id,username', 'tags:slug,tag_name', "category:name_category,id"])->where("active", 1)->get();
+        $all_posts = Post::with(['user:id,username', 'tags:slug,tag_name', "category:name_category,id"])->where("active", 1)->paginate(2);
         $all_categories = Category::where("active", "1")->get();
         $all_tags = Tag::where("active", 1)->get();
         return [
