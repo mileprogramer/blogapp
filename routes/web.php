@@ -18,11 +18,6 @@ use Illuminate\Support\Facades\DB;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-// Route for testing
-Route::get("/db", function(){
-    $post = DB::select("SELECT * FROM Tag");
-    dd($post);
-});
 
 // Home page
 Route::get('/', function () {
@@ -36,10 +31,6 @@ Route::get('blog/search', [BlogController::class, 'search']);
 Route::get('blog/category/{category:slug}', [BlogController::class, 'filterCategory']);
 Route::get('blog/tag/{tag:slug}', [BlogController::class, 'filterTag']);
 
-// Login page
-Route::get('/admin/login', function () {
-    return view("adminDashboard/login");
-});
 
 // ADMIN DASHBOARD
 Route::get('/admin', function () {

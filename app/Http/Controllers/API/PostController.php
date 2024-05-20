@@ -120,7 +120,7 @@ class PostController extends Controller
             }
 
             if($request->filled('category') && $request->input('category') !== $category["name_category"]){
-                $rules['category'] = 'unique:category,name_category';
+                $rules['category'] = 'string';
                 $new_category = Category::where("name_category", $request->input("category"))->firstOrFail();
             }
 
