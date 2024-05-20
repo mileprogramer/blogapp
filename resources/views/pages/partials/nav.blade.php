@@ -2,7 +2,7 @@
     <div class="container nav-container">
         <div class="responsive-mobile-menu">
             <div class="logo-wrapper">
-                <a href="index.html" class="logo">
+                <a href="/" class="logo">
                     <img src={{ asset("img/logo.png")}} alt="logo">
                 </a>
             </div>
