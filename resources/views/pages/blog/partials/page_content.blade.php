@@ -23,7 +23,8 @@
             </div>
             <div class="col-lg-4">
                 @include('pages.layouts.sidebar', [
-                    "posts"=>$posts, 
+                    "posts"=>$posts,
+                    "isSearched"=>$isSearched,
                     "tags"=>$tags ,
                     "categories"=>$categories, 
                     "popular_posts"=>$popular_posts

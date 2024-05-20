@@ -20,7 +20,9 @@
     @include('pages.partials.nav')
 {{--     @include('pages.partials.header') --}}
     @include('pages.layouts.breadcrumbs')
-    @include('pages.blog.partials.page_content', ["posts"=>$posts,
+    @include('pages.blog.partials.page_content', [
+        "posts"=>$posts,
+        "isSearched"=>$isSearched,
         "tags"=>$tags,
         "categories"=>$categories, 
         "popular_posts"=>$popular_posts
