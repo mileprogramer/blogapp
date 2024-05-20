@@ -6,7 +6,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class BlogController extends Controller
 {
@@ -18,6 +18,7 @@ class BlogController extends Controller
         $data = $this->getSidebarData();  
         return view("pages.blog.blog", [
             "posts"=>$data["posts"], 
+            "isSearched"=>false, 
             "categories"=>$data["categories"], 
             "tags"=>$data["tags"], 
             "popular_posts"=>$data["popular_posts"]
@@ -81,6 +82,36 @@ class BlogController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function search(Request $request)
+    {
+        // search by title and author
+
+        $request->validate([
+            "search-term"=>"string|min:3"
+        ]);
+
+        $search_term = $request->input("search-term");
+        
+        $posts = Post::where('title', 'LIKE', '%' . $search_term . '%')
+            ->orWhereHas('user', function ($query) use ($search_term) {
+                $query->where('username', 'LIKE', '%' . $search_term . '%');
+            })
+            ->with(['user:id,username', 'tags:slug,tag_name', 'category:id,name_category'])
+            ->get();
+    
+        if($posts->isEmpty()){
+            return redirect("/blog")->withErrors("There is not such a post with these title or the name of admin who write the post");
+        }
+        $data = $this->getSidebarData();
+        return view("pages.blog.blog", [
+            "posts" => $posts,
+            "isSearched"=>true,
+            "categories"=>$data["categories"], 
+            "tags"=>$data["tags"], 
+            "popular_posts" => $data["popular_posts"]
+        ]);
     }
 
     private function getSidebarData():array
