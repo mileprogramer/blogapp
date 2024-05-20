@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
@@ -29,9 +30,9 @@ Route::get('/', function () {
 });
 
 // Blog page
-Route::get('/blog', function () {
-    return view("pages/blog/blog");
-});
+Route::get('/blog', [BlogController::class, 'index']);
+Route::get('/blog/single-post/{post:slug}', [BlogController::class, 'show']);
+Route::get('blog/search', [BlogController::class, 'search']);
 
 // Login page
 Route::get('/admin/login', function () {
