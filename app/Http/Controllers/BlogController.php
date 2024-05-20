@@ -42,14 +42,16 @@ class BlogController extends Controller
      */
     public function show(Post $post)
     {
-
-        $post->total_access = $post->total_access + 1;
-        $post->save();
-
-        $data = $this->getSidebarData();
-        $data["post"] = $post;
-        $data["isFiltered"] = true;
-        return view("pages.post.post", $data);
+        if($post->active === 1){
+            $post->total_access = $post->total_access + 1;
+            $post->save();
+    
+            $data = $this->getSidebarData();
+            $data["post"] = $post;
+            $data["isFiltered"] = true;
+            return view("pages.post.post", $data);
+        }
+        abort(404);
     }
 
     /**
