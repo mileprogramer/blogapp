@@ -91,7 +91,7 @@ class BlogController extends Controller
                 $query->where('username', 'LIKE', '%' . $search_term . '%');
             })
             ->with(['user:id,username', 'tags:slug,tag_name', 'category:id,name_category'])
-            ->get();
+            ->paginate(2);
     
         if($posts->isEmpty()){
             return redirect("/blog")->withErrors("There is not such a post with these title or the name of admin who write the post");
@@ -104,7 +104,7 @@ class BlogController extends Controller
 
     public function filterCategory(Category $category)
     {
-        $posts = Post::where("id_category", $category->id)->get();
+        $posts = Post::where("id_category", $category->id)->paginate(2);
         $data = $this->getSidebarData();
         $data["posts"] = $posts;
         $data["isFiltered"] = true;
@@ -117,7 +117,7 @@ class BlogController extends Controller
         $post_ids = array_map(function($post_tag){
             return $post_tag["post_id"];
         }, $post_tag->toArray());
-        $posts = Post::whereIn("id", $post_ids)->get();
+        $posts = Post::whereIn("id", $post_ids)->paginate(2);
         $data = $this->getSidebarData();
         $data["posts"] = $posts;
         $data["isFiltered"] = true;
