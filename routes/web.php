@@ -33,6 +33,8 @@ Route::get('/', function () {
 Route::get('/blog', [BlogController::class, 'index']);
 Route::get('/blog/single-post/{post:slug}', [BlogController::class, 'show']);
 Route::get('blog/search', [BlogController::class, 'search']);
+Route::get('blog/category/{category:slug}', [BlogController::class, 'filterCategory']);
+Route::get('blog/tag/{tag:slug}', [BlogController::class, 'filterTag']);
 
 // Login page
 Route::get('/admin/login', function () {
