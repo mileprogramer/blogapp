@@ -18,13 +18,8 @@
 
 @section('main-wrapper')
     @include('pages.partials.nav')
-{{--     @include('pages.partials.header') --}}
     @include('pages.layouts.breadcrumbs')
-    @include('pages.blog.partials.page_content', ["posts"=>$posts,
-        "tags"=>$tags,
-        "categories"=>$categories, 
-        "popular_posts"=>$popular_posts
-    ])
+    @include('pages.post.partials.page_content', ["post" => $post])
     @include('pages.partials.footer')
     @include('pages.partials.back_to_top')
     @include('pages.partials.js')
