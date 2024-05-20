@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\PostTag;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -15,14 +16,9 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $data = $this->getSidebarData();  
-        return view("pages.blog.blog", [
-            "posts"=>$data["posts"], 
-            "isSearched"=>false, 
-            "categories"=>$data["categories"], 
-            "tags"=>$data["tags"], 
-            "popular_posts"=>$data["popular_posts"]
-        ]);
+        $data = $this->getSidebarData();
+        return view("pages.blog.blog", $data);
+        
     }
 
     /**
@@ -51,13 +47,9 @@ class BlogController extends Controller
         $post->save();
 
         $data = $this->getSidebarData();
-        return view("pages.post.post", [
-            "post"=>$post, 
-            "posts"=>$data["posts"], 
-            "categories"=>$data["categories"], 
-            "tags"=>$data["tags"], 
-            "popular_posts"=>$data["popular_posts"]
-        ]);
+        $data["post"] = $post;
+        $data["isFiltered"] = true;
+        return view("pages.post.post", $data);
     }
 
     /**
@@ -105,13 +97,31 @@ class BlogController extends Controller
             return redirect("/blog")->withErrors("There is not such a post with these title or the name of admin who write the post");
         }
         $data = $this->getSidebarData();
-        return view("pages.blog.blog", [
-            "posts" => $posts,
-            "isSearched"=>true,
-            "categories"=>$data["categories"], 
-            "tags"=>$data["tags"], 
-            "popular_posts" => $data["popular_posts"]
-        ]);
+        $data["posts"] = $posts;
+        $data["isSearched"] = true;
+        return view("pages.blog.blog", $data);
+    }
+
+    public function filterCategory(Category $category)
+    {
+        $posts = Post::where("id_category", $category->id)->get();
+        $data = $this->getSidebarData();
+        $data["posts"] = $posts;
+        $data["isFiltered"] = true;
+        return view("pages.blog.blog", $data);
+    }
+
+    public function filterTag(Tag $tag)
+    {
+        $post_tag = PostTag::where("tag_id", $tag->id)->get();
+        $post_ids = array_map(function($post_tag){
+            return $post_tag["post_id"];
+        }, $post_tag->toArray());
+        $posts = Post::whereIn("id", $post_ids)->get();
+        $data = $this->getSidebarData();
+        $data["posts"] = $posts;
+        $data["isFiltered"] = true;
+        return view("pages.blog.blog", $data);
     }
 
     private function getSidebarData():array
@@ -122,7 +132,9 @@ class BlogController extends Controller
         $all_categories = Category::where("active", "1")->get();
         $all_tags = Tag::where("active", 1)->get();
         return [
-            "posts" => $all_posts, 
+            "posts" => $all_posts,
+            "isFiltered" => false,
+            "isSearched" => false,
             "categories"=>$all_categories, 
             "tags"=>$all_tags, 
             "popular_posts" => $popular_posts
